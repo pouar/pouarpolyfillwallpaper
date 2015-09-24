@@ -1,5 +1,5 @@
-#include "rsvgconvert_plugin.h"
-#include "rsvgconvert.h"
+#include "pouarquick_plugin.h"
+#include "pouarquick.h"
 
 #include <QtQml/qqml.h>
 

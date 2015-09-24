@@ -14,13 +14,13 @@ uri = PouarQuick
 
 # Input
 SOURCES += \
-    rsvgconvert_plugin.cpp \
-    rsvgconvert.cpp \
+    pouarquickplugin.cpp \
+    pouarquick.cpp \
     rsvg-convert.c
 
 HEADERS += \
-    rsvgconvert_plugin.h \
-    rsvgconvert.h \
+    pouarquickplugin.h \
+    pouarquick.h \
     rsvg-convert.h
 
 QMAKE_CFLAGS += $(shell pkg-config --cflags librsvg-2.0 gio-unix-2.0 libbsd) -std=c11 -march=native -O2 -flto=8 -finline-functions -fpredictive-commoning -ftree-partial-pre -fgcse-after-reload -fgcse-las -fmerge-all-constants -fira-hoist-pressure -fivopts -freorder-blocks-and-partition --param large-function-growth=0 --param inline-unit-growth=0 --param large-stack-frame-growth=0 --param max-inline-recursive-depth-auto=1000 --param max-inline-recursive-depth=1000

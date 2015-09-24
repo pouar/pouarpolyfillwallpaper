@@ -1,5 +1,5 @@
-#ifndef POUARQML_PLUGIN_H
-#define POUARQML_PLUGIN_H
+#ifndef POUARQUICK_PLUGIN_H
+#define POUARQUICK_PLUGIN_H
 
 
 #include <QtQml/QQmlExtensionPlugin>

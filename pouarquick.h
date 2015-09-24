@@ -1,5 +1,5 @@
-#ifndef RSVGCONVERT_H
-#define RSVGCONVERT_H
+#ifndef POUARQUICK_H
+#define POUARQUICK_H
 #include <QObject>
 #include <QString>
 #include <QUrl>
