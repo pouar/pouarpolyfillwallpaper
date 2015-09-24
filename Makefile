@@ -5,19 +5,20 @@ INSTALL = /usr/bin/install
 INSTALL_PROGRAM = $(INSTALL)
 INSTALL_DATA = $(INSTALL) -m 644
 
-DIRS = pouarquick
+DIRS = pouarquick pouarwallpaper
 # the sets of directories to do various things in
 BUILDDIRS = $(DIRS:%=build-%)
 INSTALLDIRS = $(DIRS:%=install-%)
 UNINSTALLDIRS = $(DIRS:%=uninstall-%)
 CLEANDIRS = $(DIRS:%=clean-%)
+DISTCLEANDIRS = $(DIRS:%=distclean-%)
 TESTDIRS = $(DIRS:%=test-%)
 
 all: pouarquick/Makefile $(BUILDDIRS)
 pouarquick/Makefile:
 	cd pouarquick;qmake-qt5
-$(DIRS): $(BUILDDIRS)
-$(BUILDDIRS):
+$(DIRS): pouarquick/Makefile $(BUILDDIRS)
+$(BUILDDIRS): pouarquick/Makefile
 	$(MAKE) -C $(@:build-%=%)
 
 
@@ -32,6 +33,9 @@ $(TESTDIRS):
 clean: $(CLEANDIRS)
 $(CLEANDIRS): 
 	$(MAKE) -C $(@:clean-%=%) clean
+distclean: $(DISTCLEANDIRS)
+$(DISTCLEANDIRS): 
+	$(MAKE) -C $(@:distclean-%=%) distclean
 
 uninstall: $(UNINSTALLDIRS)
 $(UNINSTALLDIRS): 
@@ -43,5 +47,6 @@ $(UNINSTALLDIRS):
 .PHONY: subdirs $(UNINSTALLDIRS)
 .PHONY: subdirs $(TESTDIRS)
 .PHONY: subdirs $(CLEANDIRS)
-.PHONY: all install clean test uninstall
+.PHONY: subdirs $(DISTCLEANDIRS)
+.PHONY: all
 
