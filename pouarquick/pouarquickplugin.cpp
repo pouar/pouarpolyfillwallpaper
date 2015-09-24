@@ -1,4 +1,4 @@
-#include "pouarquick_plugin.h"
+#include "pouarquickplugin.h"
 #include "pouarquick.h"
 
 #include <QtQml/qqml.h>
