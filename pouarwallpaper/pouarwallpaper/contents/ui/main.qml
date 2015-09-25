@@ -18,14 +18,7 @@ Rectangle {
 		image.sourceSize.width=(imagetmp.sourceSize.width>image.sourceSize.height) ? root.width : -1
 		image.sourceSize.height=(imagetmp.sourceSize.height>image.sourceSize.width) ? root.height : -1
 		image2.source = (image.source!=undefined) ? image.source : imagetmp.source
-		if(issvg(imagetmp.source))
-		{
-		image.source = "image://image/"+imagetmp.source
-		}
-		else
-		{
-			image.source = imagetmp.source
-		}
+		image.source = (issvg(imagetmp.source)) ? "image://image/"+imagetmp.source : imagetmp.source
 		animateImage.start()
 	}
 
@@ -69,10 +62,11 @@ Rectangle {
 		to: 0.0
 		duration:500
 		easing {type: Easing.Linear}
+		onStopped:image2.visible=false
 	}
 	Image {
 		id: image
-		cache:false
+		cache:true
 		mipmap : true
 		fillMode: Image.PreserveAspectFit
 		width:parent.width
@@ -80,7 +74,7 @@ Rectangle {
 	}
 	Image {
 		id: image2
-		cache:false
+		cache:true
 		mipmap : true
 		fillMode: Image.PreserveAspectFit
 		width:parent.width
@@ -89,6 +83,6 @@ Rectangle {
 	Image {
 		id: imagetmp
 		visible:false
-		cache:false
+		cache:true
 	}
 }
