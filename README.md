@@ -1,3 +1,5 @@
 This is a wallpaper app for Plasma Desktop 5 that uses librsvg to parse SVGs as QtSvg only supports the SVG Tiny subset.
 
+This app was mostly designed for personal use rather than end use, for example, the path to the folder containing the wallpapers is hardcoded as I never created an interface to change it as I don't change that part very often. But I decided to publish it anyway in case someone wants to use it or the code.
+
 [http://thepouar.dnsdojo.com/cgit/pouarpolyfillwallpaper.git](http://thepouar.dnsdojo.com/cgit/pouarpolyfillwallpaper.git)
