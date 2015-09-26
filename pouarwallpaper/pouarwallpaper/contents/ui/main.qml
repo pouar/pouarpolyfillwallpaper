@@ -62,7 +62,6 @@ Rectangle {
 		to: 0.0
 		duration:500
 		easing {type: Easing.Linear}
-		onStopped:image2.visible=false
 	}
 	Image {
 		id: image
