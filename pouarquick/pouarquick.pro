@@ -20,9 +20,9 @@ HEADERS += \
 	pouarquick.h \
 	rsvg-convert.h
 
-QMAKE_CFLAGS += $(shell pkg-config --cflags librsvg-2.0 gio-unix-2.0 libbsd) -std=c11
+QMAKE_CFLAGS += $(shell pkg-config --cflags librsvg-2.0 libbsd) -std=c11
 QMAKE_CXXFLAGS += -std=c++14
-QMAKE_LIBS += $(shell pkg-config --libs librsvg-2.0 gio-unix-2.0 libbsd)
+QMAKE_LIBS += $(shell pkg-config --libs librsvg-2.0 libbsd)
 OTHER_FILES = qmldir
 
 !equals(_PRO_FILE_PWD_, $$OUT_PWD) {

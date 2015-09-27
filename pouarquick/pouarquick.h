@@ -1,15 +1,8 @@
 #ifndef POUARQUICK_H
 #define POUARQUICK_H
-#include <QObject>
-#include <QString>
-#include <QUrl>
 #include <QDir>
-#include <QImage>
-#include <qqmlextensionplugin.h>
 
-#include <qqmlengine.h>
 #include <QtQuick/qquickimageprovider.h>
-#include <QPainter>
 extern "C" {
 	#include "rsvg-convert.h"
 	#include <bsd/bsd.h>
@@ -21,7 +14,6 @@ class PouarQuick : public QObject
 	Q_OBJECT
 	public:
 		PouarQuick(QObject *parent = 0);
-		~PouarQuick();
 		Q_INVOKABLE QImage getImage(QUrl url);
 		Q_INVOKABLE QUrl randomfile(QUrl url);
 

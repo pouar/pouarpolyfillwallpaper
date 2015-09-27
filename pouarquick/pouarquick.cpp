@@ -6,10 +6,6 @@ PouarQuick::PouarQuick(QObject *parent) : QObject(parent)
 {
 }
 
-PouarQuick::~PouarQuick()
-{
-}
-
 
 QImageProvider::QImageProvider() : QQuickImageProvider(QQuickImageProvider::Image)
 {
