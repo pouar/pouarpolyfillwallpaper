@@ -5,6 +5,7 @@ import PouarQuick 1.0
 import Qt.labs.folderlistmodel 2.1
 import org.kde.plasma.wallpapers.image 2.0 as Wallpaper
 import org.kde.kquickcontrolsaddons 2.0
+import QtQuick.Dialogs 1.2
 
 Rectangle {
 	id: root
@@ -12,6 +13,17 @@ Rectangle {
 	Timer {
 		interval: 600000; running: true; repeat: true
 		onTriggered: action_next()
+	}
+	function fileSelected(picture)
+	{
+		imagetmp.source = picture
+		image.sourceSize.width=(imagetmp.sourceSize.width>image.sourceSize.height) ? root.width : -1
+		image.sourceSize.height=(imagetmp.sourceSize.height>image.sourceSize.width) ? root.height : -1
+		oldimage.text = (image.source!=undefined) ? newimage.text : imagetmp.source
+		newimage.text=imagetmp.source;
+		image.source = (issvg(newimage.text)) ? "image://image/"+newimage.text: newimage.text
+		image2.source = (issvg(oldimage.text )) ? "image://image2/"+oldimage.text : oldimage.text
+		animateImage.start()
 	}
 	function action_next() {
 		imagetmp.source = PouarQuick.randomfile("file:///mnt/win7backup/wp")
@@ -22,6 +34,12 @@ Rectangle {
 		image.source = (issvg(newimage.text)) ? "image://image/"+newimage.text: newimage.text
 		image2.source = (issvg(oldimage.text )) ? "image://image2/"+oldimage.text : oldimage.text
 		animateImage.start()
+	}
+	function action_select() {
+		var component = Qt.createComponent("dialog.qml")
+			var window    = component.createObject(root)
+			window.clicked.connect(fileSelected)
+
 	}
 
 	function action_open() {
@@ -44,6 +62,8 @@ Rectangle {
 	Component.onCompleted: {
 		wallpaper.setAction("open", i18nd("plasma_applet_org.kde.image", "Open Wallpaper Image"), "document-open");
 		wallpaper.setAction("next", i18nd("plasma_applet_org.kde.image","Next Wallpaper Image"),"user-desktop");
+		wallpaper.setAction("select", i18nd("plasma_applet_org.kde.image", "Select Wallpaper"), "preferences-desktop-wallpaper");
+		
 		action_next()
 	}
 	NumberAnimation {
@@ -97,4 +117,28 @@ Rectangle {
 			text: ""
 			visible:false
 		}
+/*
+	FileDialog {
+		id: fileDialog
+		title: "Please choose a file"
+		folder: "file:///mnt/win7backup/wp"
+		visible:false
+		onAccepted: {
+			visible = false
+			imagetmp.source = fileUrls
+			image.sourceSize.width=(imagetmp.sourceSize.width>image.sourceSize.height) ? root.width : -1
+			image.sourceSize.height=(imagetmp.sourceSize.height>image.sourceSize.width) ? root.height : -1
+			oldimage.text = (image.source!=undefined) ? newimage.text : imagetmp.source
+			newimage.text=imagetmp.source;
+			image.source = (issvg(newimage.text)) ? "image://image/"+newimage.text: newimage.text
+			image2.source = (issvg(oldimage.text )) ? "image://image2/"+oldimage.text : oldimage.text
+			animateImage.start()
+			
+		}
+		onRejected: {
+			
+		}
+		Component.onCompleted: visible = true
+	}
+	*/
 }
