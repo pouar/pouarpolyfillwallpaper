@@ -64,13 +64,6 @@ Author: Raph Levien <raph@artofcode.com>
 
 G_BEGIN_DECLS
 
-struct ImageBuffer {
-	unsigned char* data;
-	int width;
-	int height;
-	int stride;
-};
-
 typedef enum {
 	RSVG_SIZE_ZOOM,
 	RSVG_SIZE_WH,
@@ -205,10 +198,32 @@ static void rsvg_cairo_size_callback (int *width, int *height, gpointer data)
 	*width = dimensions->width;
 	*height = dimensions->height;
 }
+cairo_surface_t *surface[2];
 
-struct ImageBuffer runrsvg (int width, int height, const char *input)
+void cleanup(int i)
 {
-	struct ImageBuffer imagebuffer;
+		
+	cairo_surface_destroy (surface[i]);
+}
+unsigned char* svgbuf(int i)
+{
+	return cairo_image_surface_get_data(surface[i]);
+}
+int svgwidth(int i)
+{
+	return cairo_image_surface_get_width(surface[i]);
+}
+int svgheight(int i)
+{
+	return cairo_image_surface_get_height(surface[i]);
+}
+int svgstride(int i)
+{
+	return cairo_image_surface_get_stride(surface[i]);
+}
+
+int runrsvg (int width, int height, const char *input, int i)
+{
 
 	double x_zoom = 1.0;
 	double y_zoom = 1.0;
@@ -218,7 +233,7 @@ struct ImageBuffer runrsvg (int width, int height, const char *input)
 	int keep_aspect_ratio = TRUE;
 	GError *error = NULL;
 	RsvgHandle *rsvg = NULL;
-	cairo_surface_t *surface = NULL;
+	surface[i] = NULL;
 	cairo_t *cr = NULL;
 	RsvgHandleFlags flags = RSVG_HANDLE_FLAGS_NONE;
 
@@ -273,6 +288,8 @@ struct ImageBuffer runrsvg (int width, int height, const char *input)
 	rsvg = rsvg_handle_new_from_stream_sync (stream, file, flags, NULL, &error);
 
 	done:
+        g_clear_object (&stream);
+        g_clear_object (&file);
 
 	if (error != NULL) {
 		fprintf (stderr, _("Error reading SVG:"));
@@ -320,16 +337,13 @@ struct ImageBuffer runrsvg (int width, int height, const char *input)
 
 	_rsvg_size_callback (&dimensions.width, &dimensions.height, &size_data);
 
-	surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, dimensions.width, dimensions.height);
+	surface[i] = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, dimensions.width, dimensions.height);
 
-	cr = cairo_create (surface);
+	cr = cairo_create (surface[i]);
 
 	rsvg_handle_render_cairo (rsvg, cr);
+    g_object_unref (rsvg);
+    cairo_destroy (cr);
 	
-	imagebuffer.data=cairo_image_surface_get_data(surface);
-	imagebuffer.width=cairo_image_surface_get_width(surface);
-	imagebuffer.height=cairo_image_surface_get_height(surface);
-	imagebuffer.stride=cairo_image_surface_get_stride(surface);
-
-	return imagebuffer;
+	return 1;
 }

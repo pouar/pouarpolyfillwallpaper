@@ -15,18 +15,40 @@ QImageProvider::QImageProvider() : QQuickImageProvider(QQuickImageProvider::Imag
 {
 }
 
+QImageProvider2::QImageProvider2() : QQuickImageProvider(QQuickImageProvider::Image)
+{
+}
+int i = 0;
+int j = 0;
 QImage QImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
 {
+	if(i!=0)
+		cleanup(0);
 	Q_UNUSED(size);
 	QUrl dir(id);
-	ImageBuffer imagebuffer = runrsvg(
+	i = runrsvg(
 		requestedSize.width(),
 		requestedSize.height(),
-		dir.toLocalFile().toStdString().c_str()
+		dir.toLocalFile().toStdString().c_str(),0
 	);
-	QImage image(imagebuffer.data,imagebuffer.width,imagebuffer.height,imagebuffer.stride,QImage::Format_ARGB32_Premultiplied);
+	QImage image(svgbuf(0),svgwidth(0),svgheight(0),svgstride(0),QImage::Format_ARGB32_Premultiplied);
 	return image;
 }
+QImage QImageProvider2::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
+{
+	if(j!=0)
+		cleanup(1);
+	Q_UNUSED(size);
+	QUrl dir(id);
+	j = runrsvg(
+		requestedSize.width(),
+		requestedSize.height(),
+		dir.toLocalFile().toStdString().c_str(),1
+	);
+	QImage image(svgbuf(1),svgwidth(1),svgheight(1),svgstride(1),QImage::Format_ARGB32_Premultiplied);
+	return image;
+}
+
 
 QUrl PouarQuick::randomfile(QUrl url)
 {

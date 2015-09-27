@@ -15,12 +15,6 @@ extern "C" {
 	#include <bsd/bsd.h>
 }
 
-struct ImageBuffer {
-	unsigned char* data;
-	int width;
-	int height;
-	int stride;
-};
 
 class PouarQuick : public QObject
 {
@@ -41,6 +35,12 @@ class QImageProvider : public QQuickImageProvider
 {
 	public:
 		QImageProvider();
+		QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize);
+};
+class QImageProvider2 : public QQuickImageProvider
+{
+	public:
+		QImageProvider2();
 		QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize);
 };
 extern QObject *singleton(QQmlEngine *engine, QJSEngine *scriptEngine);

@@ -14,11 +14,13 @@ Rectangle {
 		onTriggered: action_next()
 	}
 	function action_next() {
-		imagetmp.source = PouarQuick.randomfile("file:///home/pouar/Pictures/wp")
+		imagetmp.source = PouarQuick.randomfile("file:///mnt/win7backup/wp")
 		image.sourceSize.width=(imagetmp.sourceSize.width>image.sourceSize.height) ? root.width : -1
 		image.sourceSize.height=(imagetmp.sourceSize.height>image.sourceSize.width) ? root.height : -1
-		image2.source = (image.source!=undefined) ? image.source : imagetmp.source
-		image.source = (issvg(imagetmp.source)) ? "image://image/"+imagetmp.source : imagetmp.source
+		oldimage.text = (image.source!=undefined) ? newimage.text : imagetmp.source
+		newimage.text=imagetmp.source;
+		image.source = (issvg(newimage.text)) ? "image://image/"+newimage.text: newimage.text
+		image2.source = (issvg(oldimage.text )) ? "image://image2/"+oldimage.text : oldimage.text
 		animateImage.start()
 	}
 
@@ -84,4 +86,15 @@ Rectangle {
 		visible:false
 		cache:true
 	}
+	
+	Text {
+			id:oldimage
+			text: ""
+			visible:false
+		}
+	Text {
+			id:newimage
+			text: ""
+			visible:false
+		}
 }
