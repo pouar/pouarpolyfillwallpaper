@@ -11,6 +11,7 @@ Rectangle {
 	id: root
 	color: "#4F0000"
 	Timer {
+		id:timer
 		interval: 600000; running: true; repeat: true
 		onTriggered: action_next()
 	}
@@ -24,6 +25,7 @@ Rectangle {
 		image.source = (issvg(newimage.text)) ? "image://image/"+newimage.text: newimage.text
 		image2.source = (issvg(oldimage.text )) ? "image://image2/"+oldimage.text : oldimage.text
 		animateImage.start()
+		timer.restart()
 	}
 	function action_next() {
 		imagetmp.source = PouarQuick.randomfile("file:///mnt/win7backup/wp")
