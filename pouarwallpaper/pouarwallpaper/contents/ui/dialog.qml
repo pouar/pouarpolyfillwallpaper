@@ -9,9 +9,11 @@ FileDialog {
 	signal clicked(string picture);
 	onAccepted: {
 		fileDialog.clicked(fileDialog.fileUrl)
+		fileDialog.destroy();
 	}
 	onRejected: {
 		console.log("Canceled")
+		fileDialog.destroy();
 	}
 	Component.onCompleted: visible = true
 }
