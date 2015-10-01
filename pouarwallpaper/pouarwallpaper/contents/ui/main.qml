@@ -47,6 +47,10 @@ Rectangle {
 	function action_open() {
 		Qt.openUrlExternally(imagetmp.source)
 	}
+	
+	function action_gc() {
+		Qt.gc()
+	}
 	function sendTo() {
 		return true;
 	}
@@ -65,7 +69,7 @@ Rectangle {
 		wallpaper.setAction("open", i18nd("plasma_applet_org.kde.image", "Open Wallpaper Image"), "document-open");
 		wallpaper.setAction("next", i18nd("plasma_applet_org.kde.image","Next Wallpaper Image"),"user-desktop");
 		wallpaper.setAction("select", i18nd("plasma_applet_org.kde.image", "Select Wallpaper"), "preferences-desktop-wallpaper");
-		
+		wallpaper.setAction("gc", i18nd("plasma_applet_org.kde.image", "Run Garbage Collector"), "user-trash-full");
 		action_next()
 	}
 	NumberAnimation {
