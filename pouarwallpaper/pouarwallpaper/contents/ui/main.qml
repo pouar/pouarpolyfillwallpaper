@@ -38,8 +38,7 @@ Rectangle {
 		animateImage.start()
 	}
 	function action_select() {
-		var component = Qt.createComponent("dialog.qml")
-			var window    = component.createObject(root)
+			var window    = fileDialogCom.createObject(root)
 			window.clicked.connect(fileSelected)
 
 	}
@@ -123,28 +122,24 @@ Rectangle {
 			text: ""
 			visible:false
 		}
-/*
-	FileDialog {
-		id: fileDialog
-		title: "Please choose a file"
-		folder: "file:///mnt/win7backup/wp"
-		visible:false
-		onAccepted: {
-			visible = false
-			imagetmp.source = fileUrls
-			image.sourceSize.width=(imagetmp.sourceSize.width>image.sourceSize.height) ? root.width : -1
-			image.sourceSize.height=(imagetmp.sourceSize.height>image.sourceSize.width) ? root.height : -1
-			oldimage.text = (image.source!=undefined) ? newimage.text : imagetmp.source
-			newimage.text=imagetmp.source;
-			image.source = (issvg(newimage.text)) ? "image://image/"+newimage.text: newimage.text
-			image2.source = (issvg(oldimage.text )) ? "image://image2/"+oldimage.text : oldimage.text
-			animateImage.start()
-			
+	Component
+	{
+		id:fileDialogCom
+		FileDialog {
+			id: fileDialog
+			title: "Pouar's Polyfill: Select A Wallpaper"
+			folder: "/mnt/win7backup/wp"
+			property string picture;
+			signal clicked(string picture);
+			onAccepted: {
+				fileDialog.clicked(fileDialog.fileUrl)
+				fileDialog.destroy();
+			}
+			onRejected: {
+				console.log("Canceled")
+				fileDialog.destroy();
+			}
+			Component.onCompleted: visible = true
 		}
-		onRejected: {
-			
-		}
-		Component.onCompleted: visible = true
 	}
-	*/
 }
