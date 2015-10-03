@@ -1,6 +1,7 @@
 #ifndef POUARQUICK_PLUGIN_H
 #define POUARQUICK_PLUGIN_H
 
+#define QT_NO_KEYWORDS
 
 #include <QtQml/QQmlExtensionPlugin>
 

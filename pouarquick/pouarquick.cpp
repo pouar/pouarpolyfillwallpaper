@@ -10,41 +10,56 @@ PouarQuick::PouarQuick(QObject *parent) : QObject(parent)
 QImageProvider::QImageProvider() : QQuickImageProvider(QQuickImageProvider::Image)
 {
 }
-
-QImageProvider2::QImageProvider2() : QQuickImageProvider(QQuickImageProvider::Image)
-{
-}
-int i = 0;
-int j = 0;
 QImage QImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
 {
-	if(i!=0)
-		cleanup(0);
 	Q_UNUSED(size);
 	QUrl dir(id);
-	i = runrsvg(
-		requestedSize.width(),
-		requestedSize.height(),
-		dir.toLocalFile().toStdString().c_str(),0
-	);
-	QImage image(svgbuf(0),svgwidth(0),svgheight(0),svgstride(0),QImage::Format_ARGB32_Premultiplied);
-	return image;
-}
-QImage QImageProvider2::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
-{
-	if(j!=0)
-		cleanup(1);
-	Q_UNUSED(size);
-	QUrl dir(id);
-	j = runrsvg(
-		requestedSize.width(),
-		requestedSize.height(),
-		dir.toLocalFile().toStdString().c_str(),1
-	);
-	QImage image(svgbuf(1),svgwidth(1),svgheight(1),svgstride(1),QImage::Format_ARGB32_Premultiplied);
-	return image;
-}
+	GError *error = NULL;
+	RsvgHandle *rsvg = NULL;
+	cairo_surface_t *surface = NULL;
+	cairo_t *cr = NULL;
+	RsvgDimensionData dimensions;
+	int width = requestedSize.width();
+	int height= requestedSize.height();
+	/* Set the locale so that UTF-8 filenames work */
+	setlocale(LC_ALL, "");
 
+
+	rsvg_set_default_dpi_x_y (-1, -1);
+	
+	
+
+	rsvg = rsvg_handle_new_from_file(dir.toLocalFile().toStdString().c_str(),&error);
+
+
+	rsvg_handle_get_dimensions (rsvg, &dimensions);
+	width=(width<1)?(double)height/(double)dimensions.height*dimensions.width:width;
+	height=(height<1)?(double)width/(double)dimensions.width*dimensions.height:height;
+	double zoom=(width>height)?(double)width/(double)dimensions.width:(double)height/(double)dimensions.height;
+	surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
+
+	cr = cairo_create (surface);
+	cairo_scale(cr,zoom,zoom);
+	
+	rsvg_handle_render_cairo (rsvg, cr);
+	QImage *source = new QImage(
+		cairo_image_surface_get_data(surface),
+		cairo_image_surface_get_width(surface),
+		cairo_image_surface_get_height(surface),
+		cairo_image_surface_get_stride(surface),
+		QImage::Format_ARGB32
+	);
+	QImage image(cairo_image_surface_get_width(surface), cairo_image_surface_get_height(surface), QImage::Format_ARGB32);
+	image.fill(qRgba(0, 0, 0, 0));
+	QPainter painter(&image);
+	painter.drawImage(QPoint(0,0), *source);
+
+	delete source;
+    g_object_unref (rsvg);
+    cairo_destroy (cr);
+	cairo_surface_destroy (surface);
+	return image;
+}
 
 QUrl PouarQuick::randomfile(QUrl url)
 {

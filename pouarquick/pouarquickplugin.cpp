@@ -13,5 +13,4 @@ void PouarQuickPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
 {
 	Q_UNUSED(uri);
 	engine->addImageProvider("image", new QImageProvider);
-	engine->addImageProvider("image2", new QImageProvider2);
 }

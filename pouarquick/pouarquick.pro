@@ -12,16 +12,13 @@ uri = PouarQuick
 # Input
 SOURCES += \
 	pouarquickplugin.cpp \
-	pouarquick.cpp \
-	rsvg-convert.c
+	pouarquick.cpp
 
 HEADERS += \
 	pouarquickplugin.h \
-	pouarquick.h \
-	rsvg-convert.h
+	pouarquick.h
 
-QMAKE_CFLAGS += $(shell pkg-config --cflags librsvg-2.0 libbsd) -std=c11
-QMAKE_CXXFLAGS += -std=c++14
+QMAKE_CXXFLAGS += $(shell pkg-config --cflags librsvg-2.0 libbsd) -std=c++14
 QMAKE_LIBS += $(shell pkg-config --libs librsvg-2.0 libbsd)
 OTHER_FILES = qmldir
 

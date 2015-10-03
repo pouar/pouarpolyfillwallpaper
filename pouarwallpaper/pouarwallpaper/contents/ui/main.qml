@@ -23,7 +23,7 @@ Rectangle {
 		oldimage.text = (image.source!=undefined) ? newimage.text : imagetmp.source
 		newimage.text=imagetmp.source;
 		image.source = (issvg(newimage.text)) ? "image://image/"+newimage.text: newimage.text
-		image2.source = (issvg(oldimage.text )) ? "image://image2/"+oldimage.text : oldimage.text
+		image2.source = (issvg(oldimage.text )) ? "image://image/"+oldimage.text : oldimage.text
 		animateImage.start()
 		timer.restart()
 	}
@@ -34,7 +34,7 @@ Rectangle {
 		oldimage.text = (image.source!=undefined) ? newimage.text : imagetmp.source
 		newimage.text=imagetmp.source;
 		image.source = (issvg(newimage.text)) ? "image://image/"+newimage.text: newimage.text
-		image2.source = (issvg(oldimage.text )) ? "image://image2/"+oldimage.text : oldimage.text
+		image2.source = (issvg(oldimage.text )) ? "image://image/"+oldimage.text : oldimage.text
 		animateImage.start()
 	}
 	function action_select() {

@@ -1,12 +1,12 @@
 #ifndef POUARQUICK_H
 #define POUARQUICK_H
+#define QT_NO_KEYWORDS
+#include <locale.h>
+#include <librsvg/rsvg.h>
 #include <QDir>
-
+#include <QPainter>
 #include <QtQuick/qquickimageprovider.h>
-extern "C" {
-	#include "rsvg-convert.h"
-	#include <bsd/bsd.h>
-}
+#include <bsd/bsd.h>
 
 
 class PouarQuick : public QObject
@@ -27,12 +27,6 @@ class QImageProvider : public QQuickImageProvider
 {
 	public:
 		QImageProvider();
-		QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize);
-};
-class QImageProvider2 : public QQuickImageProvider
-{
-	public:
-		QImageProvider2();
 		QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize);
 };
 extern QObject *singleton(QQmlEngine *engine, QJSEngine *scriptEngine);
