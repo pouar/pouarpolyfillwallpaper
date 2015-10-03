@@ -93,7 +93,6 @@ Rectangle {
 	Image {
 		id: image
 		cache:true
-		mipmap : true
 		fillMode: Image.PreserveAspectFit
 		width:parent.width
 		height:parent.height
@@ -101,7 +100,6 @@ Rectangle {
 	Image {
 		id: image2
 		cache:true
-		mipmap : true
 		fillMode: Image.PreserveAspectFit
 		width:parent.width
 		height:parent.height
