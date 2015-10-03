@@ -1,15 +1,13 @@
 #include "pouarquick.h"
 
-
-
 PouarQuick::PouarQuick(QObject *parent) : QObject(parent)
 {
 }
 
-
 QImageProvider::QImageProvider() : QQuickImageProvider(QQuickImageProvider::Image)
 {
 }
+
 QImage QImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
 {
 	Q_UNUSED(size);
@@ -20,7 +18,7 @@ QImage QImageProvider::requestImage(const QString &id, QSize *size, const QSize 
 	cairo_t *cr = NULL;
 	RsvgDimensionData dimensions;
 	int width = requestedSize.width();
-	int height= requestedSize.height();
+	int height = requestedSize.height();
 	/* Set the locale so that UTF-8 filenames work */
 	setlocale(LC_ALL, "");
 
@@ -32,16 +30,16 @@ QImage QImageProvider::requestImage(const QString &id, QSize *size, const QSize 
 	rsvg = rsvg_handle_new_from_file(dir.toLocalFile().toStdString().c_str(),&error);
 
 
-	rsvg_handle_get_dimensions (rsvg, &dimensions);
-	width=(width<1)?(double)height/(double)dimensions.height*dimensions.width:width;
-	height=(height<1)?(double)width/(double)dimensions.width*dimensions.height:height;
-	double zoom=(width>height)?(double)width/(double)dimensions.width:(double)height/(double)dimensions.height;
-	surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
+	rsvg_handle_get_dimensions(rsvg, &dimensions);
+	width = (width < 1) ? (double)height / (double)dimensions.height * dimensions.width : width ;
+	height = (height < 1) ? (double)width / (double)dimensions.width * dimensions.height : height ;
+	double zoom = (width > height) ? (double)width / (double)dimensions.width : (double)height / (double)dimensions.height;
+	surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
 
-	cr = cairo_create (surface);
-	cairo_scale(cr,zoom,zoom);
+	cr = cairo_create(surface);
+	cairo_scale(cr, zoom, zoom);
 	
-	rsvg_handle_render_cairo (rsvg, cr);
+	rsvg_handle_render_cairo(rsvg, cr);
 	QImage *source = new QImage(
 		cairo_image_surface_get_data(surface),
 		cairo_image_surface_get_width(surface),
@@ -52,12 +50,12 @@ QImage QImageProvider::requestImage(const QString &id, QSize *size, const QSize 
 	QImage image(cairo_image_surface_get_width(surface), cairo_image_surface_get_height(surface), QImage::Format_ARGB32);
 	image.fill(qRgba(0, 0, 0, 0));
 	QPainter painter(&image);
-	painter.drawImage(QPoint(0,0), *source);
+	painter.drawImage(QPoint(0, 0), *source);
 
 	delete source;
-    g_object_unref (rsvg);
-    cairo_destroy (cr);
-	cairo_surface_destroy (surface);
+    g_object_unref(rsvg);
+    cairo_destroy(cr);
+	cairo_surface_destroy(surface);
 	return image;
 }
 
@@ -69,10 +67,11 @@ QUrl PouarQuick::randomfile(QUrl url)
 	url.setUrl(dir.absolutePath());
 	return url;
 }
+
 QObject *singleton(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
-	Q_UNUSED(engine)
-	Q_UNUSED(scriptEngine)
+	Q_UNUSED(engine);
+	Q_UNUSED(scriptEngine);
 	PouarQuick *pouarquick = new PouarQuick();
 	return pouarquick;
 }

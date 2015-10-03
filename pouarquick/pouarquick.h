@@ -1,6 +1,8 @@
 #ifndef POUARQUICK_H
 #define POUARQUICK_H
+
 #define QT_NO_KEYWORDS
+
 #include <locale.h>
 #include <librsvg/rsvg.h>
 #include <QDir>
@@ -14,7 +16,6 @@ class PouarQuick : public QObject
 	Q_OBJECT
 	public:
 		PouarQuick(QObject *parent = 0);
-		Q_INVOKABLE QImage getImage(QUrl url);
 		Q_INVOKABLE QUrl randomfile(QUrl url);
 
 	public Q_SLOTS:
