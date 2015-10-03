@@ -13,30 +13,30 @@ QImage QImageProvider::requestImage(const QString &id, QSize *size, const QSize 
 	Q_UNUSED(size);
 	QUrl dir(id);
 	GError *error = NULL;
-	RsvgHandle *rsvg = NULL;
-	cairo_surface_t *surface = NULL;
-	cairo_t *cr = NULL;
 	RsvgDimensionData dimensions;
-	int width = requestedSize.width();
-	int height = requestedSize.height();
+	int width = 1;
+	int height = 1;
 	/* Set the locale so that UTF-8 filenames work */
 	setlocale(LC_ALL, "");
-
+	double zoom = 1.0;
 
 	rsvg_set_default_dpi_x_y (-1, -1);
 	
 	
 
-	rsvg = rsvg_handle_new_from_file(dir.toLocalFile().toStdString().c_str(),&error);
+	RsvgHandle *rsvg = rsvg_handle_new_from_file(dir.toLocalFile().toStdString().c_str(),&error);
+	if(rsvg!=NULL)
+	{
+		width = requestedSize.width();
+		height = requestedSize.height();
+		rsvg_handle_get_dimensions(rsvg, &dimensions);
+		width = (width < 1) ? (double)height / (double)dimensions.height * dimensions.width : width ;
+		height = (height < 1) ? (double)width / (double)dimensions.width * dimensions.height : height ;
+		zoom = (width > height) ? (double)width / (double)dimensions.width : (double)height / (double)dimensions.height;
+	}
+	cairo_surface_t *surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
 
-
-	rsvg_handle_get_dimensions(rsvg, &dimensions);
-	width = (width < 1) ? (double)height / (double)dimensions.height * dimensions.width : width ;
-	height = (height < 1) ? (double)width / (double)dimensions.width * dimensions.height : height ;
-	double zoom = (width > height) ? (double)width / (double)dimensions.width : (double)height / (double)dimensions.height;
-	surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
-
-	cr = cairo_create(surface);
+	cairo_t *cr = cairo_create(surface);
 	cairo_scale(cr, zoom, zoom);
 	
 	rsvg_handle_render_cairo(rsvg, cr);
