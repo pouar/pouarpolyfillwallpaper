@@ -12,7 +12,6 @@ QImage QImageProvider::requestImage(const QString &id, QSize *size, const QSize 
 {
 	Q_UNUSED(size);
 	QUrl dir(id);
-	GError *error = NULL;
 	RsvgDimensionData dimensions;
 	int width = 1;
 	int height = 1;
@@ -24,7 +23,7 @@ QImage QImageProvider::requestImage(const QString &id, QSize *size, const QSize 
 	
 	
 
-	RsvgHandle *rsvg = rsvg_handle_new_from_file(dir.toLocalFile().toStdString().c_str(),&error);
+	RsvgHandle *rsvg = rsvg_handle_new_from_file(dir.toLocalFile().toStdString().c_str(),NULL);
 	if(rsvg!=NULL)
 	{
 		width = requestedSize.width();
@@ -63,8 +62,13 @@ QUrl PouarQuick::randomfile(QUrl url)
 {
 	QDir dir(url.toLocalFile());
 	QFileInfoList dirs = QFileInfoList(dir.entryInfoList(QDir::Files));
-	dir.setPath(dirs.at(arc4random_uniform(dirs.size())).filePath());
-	url.setUrl(dir.absolutePath());
+	if(dirs.size()>0)
+	{
+		dir.setPath(dirs.at(arc4random_uniform(dirs.size())).filePath());
+		url.setUrl(dir.absolutePath());
+	}
+	else
+		url.setUrl("/dev/null");
 	return url;
 }
 

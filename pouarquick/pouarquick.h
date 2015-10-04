@@ -2,7 +2,7 @@
 #define POUARQUICK_H
 
 #define QT_NO_KEYWORDS
-
+#include <QDebug>
 #include <locale.h>
 #include <librsvg/rsvg.h>
 #include <QDir>
