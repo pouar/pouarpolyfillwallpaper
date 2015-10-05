@@ -44,16 +44,16 @@ QImage QImageProvider::requestImage(const QString &id, QSize *size, const QSize 
 		cairo_image_surface_get_width(surface),
 		cairo_image_surface_get_height(surface),
 		cairo_image_surface_get_stride(surface),
-		QImage::Format_ARGB32
+		QImage::Format_ARGB32_Premultiplied
 	);
-	QImage image(cairo_image_surface_get_width(surface), cairo_image_surface_get_height(surface), QImage::Format_ARGB32);
+	QImage image(cairo_image_surface_get_width(surface), cairo_image_surface_get_height(surface), QImage::Format_ARGB32_Premultiplied);
 	image.fill(qRgba(0, 0, 0, 0));
 	QPainter painter(&image);
 	painter.drawImage(QPoint(0, 0), *source);
 
 	delete source;
-    g_object_unref(rsvg);
-    cairo_destroy(cr);
+	g_object_unref(rsvg);
+	cairo_destroy(cr);
 	cairo_surface_destroy(surface);
 	return image;
 }
