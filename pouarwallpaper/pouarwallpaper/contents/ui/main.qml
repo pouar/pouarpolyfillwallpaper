@@ -18,8 +18,6 @@ Rectangle {
 	function fileSelected(picture)
 	{
 		imagetmp.source = picture
-		image.sourceSize.width=(imagetmp.sourceSize.width>image.sourceSize.height) ? root.width : -1
-		image.sourceSize.height=(imagetmp.sourceSize.height>image.sourceSize.width) ? root.height : -1
 		oldimage.text = (image.source!=undefined) ? newimage.text : imagetmp.source
 		newimage.text=imagetmp.source;
 		image.source = (issvg(newimage.text)) ? "image://image/"+newimage.text: newimage.text
@@ -29,8 +27,6 @@ Rectangle {
 	}
 	function action_next() {
 		imagetmp.source = PouarQuick.randomfile("file:///mnt/win7backup/wp")
-		image.sourceSize.width=(imagetmp.sourceSize.width>image.sourceSize.height) ? root.width : -1
-		image.sourceSize.height=(imagetmp.sourceSize.height>image.sourceSize.width) ? root.height : -1
 		oldimage.text = (image.source!=undefined) ? newimage.text : imagetmp.source
 		newimage.text=imagetmp.source;
 		image.source = (issvg(newimage.text)) ? "image://image/"+newimage.text: newimage.text

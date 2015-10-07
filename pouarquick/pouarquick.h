@@ -2,6 +2,8 @@
 #define POUARQUICK_H
 
 #define QT_NO_KEYWORDS
+#include <QtWidgets/QDesktopWidget>
+#include <QtWidgets/QApplication>
 #include <QDebug>
 #include <locale.h>
 #include <librsvg/rsvg.h>

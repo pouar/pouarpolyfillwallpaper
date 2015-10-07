@@ -11,6 +11,7 @@ QImageProvider::QImageProvider() : QQuickImageProvider(QQuickImageProvider::Imag
 QImage QImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
 {
 	Q_UNUSED(size);
+	Q_UNUSED(requestedSize);
 	QUrl dir(id);
 	RsvgDimensionData dimensions;
 	int width = 1;
@@ -18,19 +19,16 @@ QImage QImageProvider::requestImage(const QString &id, QSize *size, const QSize 
 	/* Set the locale so that UTF-8 filenames work */
 	setlocale(LC_ALL, "");
 	double zoom = 1.0;
-
 	rsvg_set_default_dpi_x_y (-1, -1);
-	
 	
 
 	RsvgHandle *rsvg = rsvg_handle_new_from_file(dir.toLocalFile().toStdString().c_str(),NULL);
 	if(rsvg!=NULL)
 	{
-		width = requestedSize.width();
-		height = requestedSize.height();
 		rsvg_handle_get_dimensions(rsvg, &dimensions);
-		width = (width < 1) ? (double)height / (double)dimensions.height * dimensions.width : width ;
-		height = (height < 1) ? (double)width / (double)dimensions.width * dimensions.height : height ;
+		QRect desktop = QApplication::desktop()->screenGeometry();
+		width = (dimensions.width<dimensions.height) ? (double)desktop.height() / (double)dimensions.height * dimensions.width : desktop.width() ;
+		height = (dimensions.height<dimensions.width) ? (double)desktop.width() / (double)dimensions.width * dimensions.height : desktop.height() ;
 		zoom = (width > height) ? (double)width / (double)dimensions.width : (double)height / (double)dimensions.height;
 	}
 	cairo_surface_t *surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
