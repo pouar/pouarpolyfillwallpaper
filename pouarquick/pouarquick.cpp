@@ -27,9 +27,25 @@ QImage QImageProvider::requestImage(const QString &id, QSize *size, const QSize 
 	{
 		rsvg_handle_get_dimensions(rsvg, &dimensions);
 		QRect desktop = QApplication::desktop()->screenGeometry();
-		width = (dimensions.width<dimensions.height) ? (double)desktop.height() / (double)dimensions.height * dimensions.width : desktop.width() ;
-		height = (dimensions.height<dimensions.width) ? (double)desktop.width() / (double)dimensions.width * dimensions.height : desktop.height() ;
-		zoom = (width > height) ? (double)width / (double)dimensions.width : (double)height / (double)dimensions.height;
+		if(dimensions.width!=dimensions.height)
+		{
+			width = (dimensions.width<dimensions.height) ? (double)desktop.height() / (double)dimensions.height * dimensions.width : desktop.width() ;
+			height = (dimensions.height<dimensions.width) ? (double)desktop.width() / (double)dimensions.width * dimensions.height : desktop.height() ;
+			zoom = (width > height) ? (double)width / (double)dimensions.width : (double)height / (double)dimensions.height;
+		}
+		else if(desktop.width() > desktop.height())
+		{
+			width = desktop.height();
+			height = desktop.height();
+			zoom = (double)height / (double)dimensions.height;
+		}
+		else
+		{
+			width = desktop.width();
+			height = desktop.width();
+			zoom = (double)width / (double)dimensions.width;
+		}
+		qDebug() << width << "x" << height << ";" << dimensions.width << "x" << dimensions.height << ";" << zoom;
 	}
 	cairo_surface_t *surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
 
