@@ -88,14 +88,14 @@ Rectangle {
 	}
 	Image {
 		id: image
-		cache:true
+		cache:false
 		fillMode: Image.PreserveAspectFit
 		width:parent.width
 		height:parent.height
 	}
 	Image {
 		id: image2
-		cache:true
+		cache:false
 		fillMode: Image.PreserveAspectFit
 		width:parent.width
 		height:parent.height
@@ -103,7 +103,7 @@ Rectangle {
 	Image {
 		id: imagetmp
 		visible:false
-		cache:true
+		cache:false
 	}
 	
 	Text {
