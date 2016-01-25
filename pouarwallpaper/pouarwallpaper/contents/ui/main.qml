@@ -92,6 +92,8 @@ Rectangle {
 		fillMode: Image.PreserveAspectFit
 		width:parent.width
 		height:parent.height
+		sourceSize.width:parent.width
+		sourceSize.height:parent.height
 	}
 	Image {
 		id: image2
@@ -99,6 +101,8 @@ Rectangle {
 		fillMode: Image.PreserveAspectFit
 		width:parent.width
 		height:parent.height
+		sourceSize.width:parent.width
+		sourceSize.height:parent.height
 	}
 	Image {
 		id: imagetmp

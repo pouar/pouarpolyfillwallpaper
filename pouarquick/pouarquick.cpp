@@ -11,7 +11,6 @@ QImageProvider::QImageProvider() : QQuickImageProvider(QQuickImageProvider::Imag
 QImage QImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
 {
 	Q_UNUSED(size);
-	Q_UNUSED(requestedSize);
 	QUrl dir(id);
 	RsvgDimensionData dimensions;
 	int width = 1;
@@ -26,7 +25,7 @@ QImage QImageProvider::requestImage(const QString &id, QSize *size, const QSize 
 	if(rsvg!=NULL)
 	{
 		rsvg_handle_get_dimensions(rsvg, &dimensions);
-		QRect desktop = QApplication::desktop()->screenGeometry();
+		QRect desktop = QRect(0,0,requestedSize.width(),requestedSize.height());
 		if(dimensions.width!=dimensions.height)
 		{
 			width = (dimensions.width<dimensions.height) ? (double)desktop.height() / (double)dimensions.height * dimensions.width : desktop.width() ;
