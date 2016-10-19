@@ -10,27 +10,33 @@ import QtQuick.Dialogs 1.2
 Rectangle {
 	id: root
 	color: "#4F0000"
+	property string imagetmp
+	property string newimage
+	property string oldimage
+	readonly property string path: "/mnt/win7backup/wp"
 	Timer {
 		id:timer
-		interval: 600000; running: true; repeat: true
+		interval: 600000
+		running: true
+		repeat: true
 		onTriggered: action_next()
 	}
 	function fileSelected(picture)
 	{
-		imagetmp.source = picture
-		oldimage.text = (image.source!=undefined) ? newimage.text : imagetmp.source
-		newimage.text=imagetmp.source;
-		image.source = (issvg(newimage.text)) ? "image://image/"+newimage.text: newimage.text
-		image2.source = (issvg(oldimage.text )) ? "image://image/"+oldimage.text : oldimage.text
+		imagetmp = picture
+		oldimage = (image.source!=undefined) ? newimage : imagetmp
+		newimage=imagetmp;
+		image.source = (issvg(newimage)) ? "image://image/"+newimage: newimage
+		image2.source = (issvg(oldimage )) ? "image://image/"+oldimage : oldimage
 		animateImage.start()
 		timer.restart()
 	}
 	function action_next() {
-		imagetmp.source = PouarQuick.randomfile("file:///mnt/win7backup/wp")
-		oldimage.text = (image.source!=undefined) ? newimage.text : imagetmp.source
-		newimage.text=imagetmp.source;
-		image.source = (issvg(newimage.text)) ? "image://image/"+newimage.text: newimage.text
-		image2.source = (issvg(oldimage.text )) ? "image://image/"+oldimage.text : oldimage.text
+		imagetmp = PouarQuick.randomfile("file://"+path)
+		oldimage = (image.source!=undefined) ? newimage : imagetmp
+		newimage=imagetmp;
+		image.source = (issvg(newimage)) ? "image://image/"+newimage: newimage
+		image2.source = (issvg(oldimage )) ? "image://image/"+oldimage : oldimage
 		animateImage.start()
 	}
 	function action_select() {
@@ -40,7 +46,7 @@ Rectangle {
 	}
 
 	function action_open() {
-		Qt.openUrlExternally(imagetmp.source)
+		Qt.openUrlExternally(imagetmp)
 	}
 	
 	function action_gc() {
@@ -100,29 +106,13 @@ Rectangle {
 		sourceSize.width:parent.width
 		sourceSize.height:parent.height
 	}
-	Image {
-		id: imagetmp
-		visible:false
-		cache:false
-	}
-	
-	Text {
-			id:oldimage
-			text: ""
-			visible:false
-		}
-	Text {
-			id:newimage
-			text: ""
-			visible:false
-		}
 	Component
 	{
 		id:fileDialogCom
 		FileDialog {
 			id: fileDialog
 			title: "Pouar's Polyfill: Select A Wallpaper"
-			folder: "/mnt/win7backup/wp"
+			folder: path
 			property string picture;
 			signal clicked(string picture);
 			onAccepted: {
