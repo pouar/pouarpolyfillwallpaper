@@ -56,10 +56,6 @@ Rectangle {
 		else
 			return false;
 	}
-
-	function randomNumber() {
-		return Math.random() * folderModel.count;
-	}
 	Component.onCompleted: {
 		wallpaper.setAction("open", i18nd("plasma_applet_org.kde.image", "Open Wallpaper Image"), "document-open");
 		wallpaper.setAction("next", i18nd("plasma_applet_org.kde.image","Next Wallpaper Image"),"user-desktop");
