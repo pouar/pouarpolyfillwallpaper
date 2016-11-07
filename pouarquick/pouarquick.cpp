@@ -78,10 +78,10 @@ QUrl PouarQuick::randomfile(QUrl url)
 	if(dirs.size()>0)
 	{
 		dir.setPath(dirs.at(arc4random_uniform(dirs.size())).filePath());
-		url.setUrl(dir.absolutePath());
+		url.setUrl("file://"+dir.absolutePath());
 	}
 	else
-		url.setUrl("/dev/null");
+		url.setUrl("file:///dev/null");
 	return url;
 }
 
