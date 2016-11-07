@@ -6,13 +6,16 @@ QT += qml
 
 CONFIG += qt plugin
 
+QMAKE_EXT_CPP = .C
+QMAKE_EXT_MOC = .C
+
 TARGET = $$qtLibraryTarget($$TARGET)
 uri = PouarQuick
 
 # Input
 SOURCES += \
-	pouarquickplugin.cpp \
-	pouarquick.cpp
+	pouarquickplugin.C \
+	pouarquick.C
 
 HEADERS += \
 	pouarquickplugin.h \
